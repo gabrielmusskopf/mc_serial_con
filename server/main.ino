@@ -3,11 +3,13 @@
  * It is intended to run on the Arduino platform, therefore it relies on specific library functions
  */
 
+
 #define CLIENT_1_IN 	8		// Client 1 button
 #define CLIENT_2_IN 	9		// Client 2 button
 #define CLIENT_3_IN 	10		// Client 3 button
-#define SERIAL_OUT		11		// Serial output
-#define CS_1			13		// Client 1 Chip Select
+#define CS_1			2		// Client 1 Chip Select
+#define CS_2			3		// Client 2 Chip Select
+#define CS_3			4		// Client 3 Chip Select
 #define TOGGLE_LED_CMD	"T"		// Serial Command
 
 class Client {
@@ -15,12 +17,13 @@ class Client {
   private:
   	int csPin;
   	int inputPin;
-    int wasPressed;
+    int cs = 0;
+    int wasPressed = 0;
   
   void logToggled() {
   	Serial.print("Client pin ");
     Serial.print(csPin);
-    Serial.println(" toggled"); 
+    Serial.println(" toggled. Wrinting to serial"); 
   }
   
   void initialize() {
@@ -29,10 +32,9 @@ class Client {
   }
   
   public:
-  Client(int cs, int input) {
+  Client(int input, int cs) {
   	csPin = cs;
     inputPin = input;
-    wasPressed = 0;
     
     initialize();
   }
@@ -40,21 +42,27 @@ class Client {
   void execute() {
     int in;
   
-    while(digitalRead(CLIENT_1_IN) && wasPressed) {}
+    while(digitalRead(inputPin) && wasPressed) {}
   
-    in = digitalRead(CLIENT_1_IN);
+    in = digitalRead(inputPin);
     wasPressed = 0;
 
     if (in) {
       wasPressed = 1;
+      cs = !cs;
       logToggled();
-      //Serial.println(TOGGLE_LED_CMD);
+      digitalWrite(csPin, cs);
+      Serial.println(TOGGLE_LED_CMD);
     }
   }
 };
 
-#define CLIENTS_LEN 1
-Client clients[] = {Client(CLIENT_1_IN, CS_1)};
+#define CLIENTS_LEN 3
+Client clients[] = { 
+  Client(CLIENT_1_IN, CS_1), 
+  Client(CLIENT_2_IN, CS_2), 
+  Client(CLIENT_3_IN, CS_3) 
+};
 
 void setup() {
   // Client pins are defined at construction
