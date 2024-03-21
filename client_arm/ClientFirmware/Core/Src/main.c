@@ -43,6 +43,10 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+/* SERIAL Configuration */
+SERIAL_Config_t m_serialConfig = {
+		.usart = &huart1
+};
 
 /* USER CODE BEGIN PV */
 
@@ -90,7 +94,10 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+
+  SERIAL_Init(&m_serialConfig);
 
   /* USER CODE END 2 */
 
@@ -98,6 +105,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -152,7 +160,13 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+/* HAL Generic UART Callback*/
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+	// Check if is the UART instance of the SERIAL module
+	if(huart->Instance == huart1.Instance){
+		SERIAL_RX_Callback();
+	}
+}
 /* USER CODE END 4 */
 
 /**

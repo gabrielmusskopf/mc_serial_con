@@ -28,6 +28,22 @@ typedef struct {
  # 		 PUBLIC FUNCTIONS     	  #
  #################################*/
 /*
+ * @title{Serial Clear RX Buffer}
+ *
+ * Description: Is responsible to clear the receiver buffer
+ */
+void SERIAL_ClearRxBuffer(void);
+
+/*
+ * @title{Serial Get Data}
+ *
+ * Description: Is responsible to get the new data received
+ *
+ * @param[out] pData - Received data
+ */
+void SERIAL_GetData(uint8_t *pData);
+
+/*
  * @title{Serial Reception Control}
  *
  * Description: Enables/Disables the serial reception
@@ -46,10 +62,11 @@ void SERIAL_ReceptionControl(bool enable);
 int SERIAL_Init(SERIAL_Config_t *config);
 
 /*
- * Serial Loop Function
+ * @title{Serial RX Callback}
  *
- * Description: Runs the main functionality
+ * Description: Is called when the receiver buffer is full
+ *
  */
-void SERIAL_Loop(void);
+void SERIAL_RX_Callback(void);
 
 #endif /*__SERIAL_H__*/
