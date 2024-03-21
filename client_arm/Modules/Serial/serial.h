@@ -27,12 +27,6 @@ typedef struct {
 /*#################################
  # 		 PUBLIC FUNCTIONS     	  #
  #################################*/
-/*
- * @title{Serial Clear RX Buffer}
- *
- * Description: Is responsible to clear the receiver buffer
- */
-void SERIAL_ClearRxBuffer(void);
 
 /*
  * @title{Serial Get Data}
@@ -41,7 +35,7 @@ void SERIAL_ClearRxBuffer(void);
  *
  * @param[out] pData - Received data
  */
-void SERIAL_GetData(uint8_t *pData);
+int SERIAL_GetNewReceivedValidData(void);
 
 /*
  * @title{Serial Reception Control}

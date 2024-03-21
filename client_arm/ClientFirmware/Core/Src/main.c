@@ -43,14 +43,21 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-/* SERIAL Configuration */
-SERIAL_Config_t m_serialConfig = {
-		.usart = &huart1
-};
 
 /* USER CODE BEGIN PV */
 
+/* APPLICATION Configuration */
+APPLICATION_Config_t m_applicationConfig = {
+	.inCS.Port = CS_GPIO_Port,
+	.inCS.Pin = CS_Pin,
+	.outLED.Port = LED_GPIO_Port,
+	.outLED.Pin = LED_Pin
+};
 
+/* SERIAL Configuration */
+SERIAL_Config_t m_serialConfig = {
+	.usart = &huart1
+};
 
 /* USER CODE END PV */
 
@@ -97,6 +104,7 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
+  APPLICATION_Init(&m_applicationConfig);
   SERIAL_Init(&m_serialConfig);
 
   /* USER CODE END 2 */
@@ -105,7 +113,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
+	  APPLICATION_Loop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

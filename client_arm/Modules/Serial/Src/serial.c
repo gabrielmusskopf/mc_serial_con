@@ -18,7 +18,6 @@
  # 			INCLUDES		      #
  #################################*/
 #define MAX_RX_DATA_LENGTH		2	// 2 bytes
-#define MAX_RX_TIMEOUT			100 // 100 ms
 #define VALID_RX_DATA			'T'
 
 /*#################################
@@ -40,12 +39,12 @@ uint8_t g_rxData[MAX_RX_DATA_LENGTH] = {0};
  *
  * @param[out] pData - Received data
  */
-int CheckRxData(uint8_t *pData){
-	int ret = HAL_OK;
+static int CheckRxData(uint8_t *pData){
+	int ret = HAL_ERROR;
 
 	/* Check if is a valid data */
-	if(strcmp((char*)pData, (char*)VALID_RX_DATA)){
-		ret = HAL_ERROR;
+	if(!strcmp((char*)pData, (char*)VALID_RX_DATA)){
+		ret = HAL_OK;
 	}
 
 	return ret;
@@ -56,29 +55,23 @@ int CheckRxData(uint8_t *pData){
  #################################*/
 
 /*
- * @title{Serial Clear RX Buffer}
- *
- * Description: Is responsible to clear the receiver buffer
- */
-void SERIAL_ClearRxBuffer(void){
-	// Clear RX Buffer
-	memset(&g_rxData, 0, sizeof(g_rxData));
-}
-
-/*
  * @title{Serial Get Data}
  *
  * Description: Is responsible to get the new data received
  *
  * @param[out] pData - Received data
  */
-void SERIAL_GetData(uint8_t *pData){
-	// Check if there is a new data
+int SERIAL_GetNewReceivedValidData(void){
+	int ret = HAL_ERROR;
+
+	/* Check if there is a new data */
 	if(g_receivedRxData > g_processedRxData){
-		// Copies the data already verified
-		memcpy(pData, g_rxData, MAX_RX_DATA_LENGTH);
+		/* Updates the necessary values */
 		g_processedRxData = g_receivedRxData;
+		ret = HAL_OK;
 	}
+
+	return ret;
 }
 
 /*
@@ -102,15 +95,13 @@ void SERIAL_ReceptionControl(bool enable){
 int SERIAL_Init(SERIAL_Config_t *config){
 	int ret = HAL_OK;
 
-	// Clears configuration variable
+	/** Clears configuration variable */
 	memset(&g_serialConfig, 0, sizeof(g_serialConfig));
-	// Check if there is configuration
+	/* Check if there is configuration */
 	if(config != NULL){
-		// Copies the configuration
+		/* Copies the configuration */
 		memcpy(&g_serialConfig, config, sizeof(g_serialConfig));
-		// Initializes the UART
-		HAL_UART_Init(g_serialConfig.usart);
-		// Initializes the reception
+		/* Initializes the reception */
 		HAL_UART_Receive_IT(g_serialConfig.usart, &g_rxData[0], sizeof(g_rxData));
 	} else {
 		ret = HAL_ERROR;
