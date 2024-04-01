@@ -17,7 +17,7 @@
 /*#################################
  # 			INCLUDES		      #
  #################################*/
-#define MAX_RX_DATA_LENGTH		2	// 2 bytes
+#define MAX_RX_DATA_LENGTH		1	// 2 bytes
 #define VALID_RX_DATA			'T'
 
 /*#################################
@@ -43,7 +43,7 @@ static int CheckRxData(uint8_t *pData){
 	int ret = HAL_ERROR;
 
 	/* Check if is a valid data */
-	if(!strcmp((char*)pData, (char*)VALID_RX_DATA)){
+	if(!strcmp((char*)pData, (char*)"T")){
 		ret = HAL_OK;
 	}
 
@@ -102,7 +102,7 @@ int SERIAL_Init(SERIAL_Config_t *config){
 		/* Copies the configuration */
 		memcpy(&g_serialConfig, config, sizeof(g_serialConfig));
 		/* Initializes the reception */
-		HAL_UART_Receive_IT(g_serialConfig.usart, &g_rxData[0], sizeof(g_rxData));
+		HAL_UART_Init(g_serialConfig.usart);
 	} else {
 		ret = HAL_ERROR;
 	}
@@ -116,9 +116,11 @@ int SERIAL_Init(SERIAL_Config_t *config){
  * Description: Is called when the receiver buffer is full
  *
  */
-void SERIAL_RX_Callback(void){
+void SERIAL_Loop(void){
 	/* Check if the reception is enable */
 	if(g_seriaReceptionControl){
+		// Receive
+		HAL_UART_Receive(g_serialConfig.usart, &g_rxData[0], sizeof(g_rxData), 1000);
 		/* Check if is valid date received */
 		if(CheckRxData(&g_rxData[0]) == HAL_OK){
 			/* Increment the received RX data counter */

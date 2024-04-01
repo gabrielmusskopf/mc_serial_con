@@ -58,9 +58,9 @@ int SERIAL_Init(SERIAL_Config_t *config);
 /*
  * @title{Serial RX Callback}
  *
- * Description: Is called when the receiver buffer is full
+ * Description: Is called in loop to receive a serial data
  *
  */
-void SERIAL_RX_Callback(void);
+void SERIAL_Loop(void);
 
 #endif /*__SERIAL_H__*/

@@ -114,6 +114,7 @@ int main(void)
   while (1)
   {
 	  APPLICATION_Loop();
+	  SERIAL_Loop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
