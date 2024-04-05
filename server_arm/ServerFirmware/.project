@@ -29,4 +29,41 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>Modules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>Modules/Common</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>Modules/ServerController</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>Modules/Common/gpio_structure.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Modules/Common/gpio_structure.h</locationURI>
+		</link>
+		<link>
+			<name>Modules/ServerController/Src</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>Modules/ServerController/servercontroller.h</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Modules/ServerController/servercontroller.h</locationURI>
+		</link>
+		<link>
+			<name>Modules/ServerController/Src/servercontroller.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/Modules/ServerController/Src/servercontroller.c</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>
